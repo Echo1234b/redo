@@ -1,7 +1,3 @@
-diff --git a/btc_live_analyzer_fixed.py b/btc_live_analyzer_fixed.py
---- a/btc_live_analyzer_fixed.py
-+++ b/btc_live_analyzer_fixed.py
-@@ -0,0 +1,587 @@
 +import streamlit as st
 +import pandas as pd
 +import numpy as np
