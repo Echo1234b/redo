@@ -1,13 +1,3 @@
-diff --git a/colab_setup_fixed.py b/colab_setup_fixed.py
---- a/colab_setup_fixed.py
-+++ b/colab_setup_fixed.py
-@@ -0,0 +1,528 @@
-+"""
-+Bitcoin Live Analyzer & Predictor - FIXED Google Colab Setup Script
-+
-+This script handles TA-Lib installation issues and provides fallback options.
-+"""
-+
 +import subprocess
 +import sys
 +import os
