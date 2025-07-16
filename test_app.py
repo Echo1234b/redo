@@ -93,6 +93,57 @@ def test_streamlit_command():
         print("❌ Streamlit command not found")
         return False
 
+def test_streamlit_structure():
+    """Test if the Streamlit app has proper structure"""
+    print("\n🔍 Testing Streamlit app structure...")
+    
+    try:
+        with open('btc_live_analyzer.py', 'r') as f:
+            content = f.read()
+        
+        # Check for set_page_config placement
+        lines = content.split('\n')
+        streamlit_import_line = None
+        set_page_config_line = None
+        other_streamlit_calls = []
+        
+        for i, line in enumerate(lines):
+            if 'import streamlit' in line and 'st' in line:
+                streamlit_import_line = i + 1
+            elif 'st.set_page_config' in line:
+                set_page_config_line = i + 1
+            elif line.strip().startswith('st.') and 'set_page_config' not in line and line.strip() != '':
+                other_streamlit_calls.append(i + 1)
+        
+        if not streamlit_import_line:
+            print("❌ Streamlit import not found")
+            return False
+        
+        if not set_page_config_line:
+            print("❌ set_page_config call not found")
+            return False
+        
+        # Check if set_page_config is called early
+        if set_page_config_line > 20:
+            print(f"⚠️ set_page_config is called late (line {set_page_config_line})")
+            return False
+        
+        # Check if there are Streamlit calls before set_page_config
+        early_calls = [line for line in other_streamlit_calls if line < set_page_config_line]
+        if early_calls:
+            print(f"❌ Found Streamlit calls before set_page_config on lines: {early_calls}")
+            return False
+        
+        print(f"✅ Streamlit structure is correct")
+        print(f"   - Import on line {streamlit_import_line}")
+        print(f"   - set_page_config on line {set_page_config_line}")
+        print(f"   - No early Streamlit calls")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Error checking Streamlit structure: {e}")
+        return False
+
 def main():
     print("🧪 Bitcoin Live Analyzer - App Test")
     print("=" * 50)
@@ -100,7 +151,8 @@ def main():
     tests = [
         test_app_file,
         test_dependencies,
-        test_streamlit_command
+        test_streamlit_command,
+        test_streamlit_structure
     ]
     
     results = []

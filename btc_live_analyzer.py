@@ -1,4 +1,13 @@
 import streamlit as st
+
+# Set page config FIRST - before any other Streamlit commands
+st.set_page_config(
+    page_title="Bitcoin Live Analyzer & Predictor",
+    page_icon="₿",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
@@ -22,10 +31,8 @@ from typing import Dict, List, Tuple
 try:
     import talib
     HAS_TALIB = True
-    st.sidebar.success("✅ Full version - TA-Lib available")
 except ImportError:
     HAS_TALIB = False
-    st.sidebar.warning("⚠️ Lite version - Using basic indicators")
 
 # Basic technical indicators for fallback
 def calculate_sma(data, window):
@@ -68,14 +75,6 @@ def calculate_stochastic(high, low, close, k_window=14, d_window=3):
     k_percent = 100 * ((close - lowest_low) / (highest_high - lowest_low))
     d_percent = k_percent.rolling(window=d_window).mean()
     return k_percent, d_percent
-
-# Set page config
-st.set_page_config(
-    page_title="Bitcoin Live Analyzer & Predictor",
-    page_icon="₿",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
 
 # Custom CSS for professional appearance
 st.markdown("""
