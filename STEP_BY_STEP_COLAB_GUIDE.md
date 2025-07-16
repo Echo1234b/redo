@@ -186,6 +186,16 @@ Once the app loads, you can:
 exec(open('run_tunnel.py').read())
 ```
 
+### **If You Get StreamlitAPIException (set_page_config):**
+This error means there's a structure issue with the Streamlit app:
+```python
+# Test the app structure
+exec(open('test_streamlit_fix.py').read())
+
+# If structure is wrong, re-download the files from GitHub
+# The latest version has this fix applied
+```
+
 ### **If App Doesn't Load:**
 1. **Wait 30 seconds** after seeing the ngrok URL
 2. **Check the cell is still running** (should show spinning icon)
