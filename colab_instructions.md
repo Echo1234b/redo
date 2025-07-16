@@ -78,19 +78,39 @@ If you need to restart:
 
 ## ⚠️ Troubleshooting
 
+### If you get ERR_NGROK_8012 (Connection Refused):
+This means ngrok is working but Streamlit isn't running. Try these steps:
+
+1. **Test your setup first**:
+   ```python
+   exec(open('test_app.py').read())
+   ```
+
+2. **Check if files are uploaded correctly**:
+   - Ensure `btc_live_analyzer.py` exists in your Colab files
+   - If not, upload it or run the setup script again
+
+3. **Manual Streamlit test**:
+   ```python
+   import subprocess
+   subprocess.run(['streamlit', 'run', 'btc_live_analyzer.py', '--server.port=8501'])
+   ```
+
 ### If setup fails:
 - Check your internet connection
 - Restart the Colab runtime
 - Try running the setup script again
 
 ### If the app doesn't load:
-- Wait 10-15 seconds after starting
+- Wait 30 seconds after starting (increased from 10)
 - Check if the ngrok URL is accessible
 - Ensure the cell is still running
+- Run the test script to diagnose issues
 
 ### If you get package errors:
 - The setup script will attempt to install missing packages
 - Some packages may require system-level installation
+- Try restarting the runtime and running setup again
 
 ## 🎯 Quick Start Commands
 
