@@ -43,7 +43,7 @@ def detect_mt5_installation():
     possible_paths = [
         r"C:\Program Files\MetaTrader 5\terminal64.exe",
         r"C:\Program Files (x86)\MetaTrader 5\terminal.exe",
-        r"C:\Users\{}\AppData\Roaming\MetaQuotes\Terminal".format(sys.platform.get('USERNAME', ''))
+        r"C:\Users\{}\AppData\Roaming\MetaQuotes\Terminal".format(os.environ.get('USERNAME', ''))        
     ]
     
     for path in possible_paths:
