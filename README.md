@@ -1,230 +1,282 @@
-# 🚀 Bitcoin Live Analyzer - MetaTrader 5 Edition
+# ₿ Bitcoin Live Analyzer & Predictor - MT5 Edition
 
-**Professional Bitcoin & Cryptocurrency Analysis with MetaTrader 5 Integration**
+A powerful, real-time Bitcoin and cryptocurrency analyzer with MetaTrader 5 integration, featuring advanced technical analysis, machine learning predictions, and live data streaming.
 
-[![MetaTrader 5](https://img.shields.io/badge/MetaTrader%205-Professional-blue)](https://www.metatrader5.com/)
-[![Python](https://img.shields.io/badge/Python-3.7%2B-brightgreen)](https://python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Web%20App-red)](https://streamlit.io/)
-[![AI Powered](https://img.shields.io/badge/AI-Powered-purple)](https://scikit-learn.org/)
+![Bitcoin Analyzer](https://img.shields.io/badge/Bitcoin-Analyzer-orange.svg)
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)
+![MetaTrader5](https://img.shields.io/badge/MetaTrader5-Integrated-green.svg)
 
-## 📋 **Overview**
+## 🚀 Features
 
-This is a professional-grade Bitcoin and cryptocurrency analysis platform that integrates directly with MetaTrader 5 to provide:
+### 📊 Real-Time Data Analysis
+- Live price feeds from MetaTrader 5
+- Support for Bitcoin and multiple cryptocurrencies
+- Multiple timeframes (M1, M5, M15, M30, H1, H4, D1, W1, MN1)
+- Real-time account monitoring
 
-- **Real-time price data** from your broker
-- **Professional technical analysis** with 30+ indicators
-- **AI-powered price predictions** using machine learning
-- **Account monitoring** with live positions and orders
-- **Multi-symbol support** for any tradeable instrument
-- **Institutional-grade data** quality
+### 📈 Advanced Technical Analysis
+- **Moving Averages**: SMA, EMA with multiple periods
+- **Momentum Indicators**: RSI, MACD, Stochastic
+- **Volatility Indicators**: Bollinger Bands, ATR
+- **Trend Indicators**: ADX, CCI, Williams %R
+- **Volume Analysis**: MFI and volume-based indicators
 
-## 🔥 **Key Features**
+### 🤖 Machine Learning Predictions
+- Random Forest price direction prediction
+- Feature engineering with technical indicators
+- Confidence scoring for predictions
+- Real-time model training and updates
 
-### **📊 MetaTrader 5 Integration**
-- Direct connection to your MT5 terminal
-- Real-time price feeds from your broker
-- Historical data with multiple timeframes (M1 to MN1)
-- Account information and position monitoring
-- Support for all symbols available in your MT5 account
-
-### **🤖 AI-Powered Analysis**
-- Machine learning price direction predictions
-- Random Forest and Gradient Boosting models
-- Feature engineering from technical indicators
-- Model accuracy reporting and confidence levels
-
-### **📈 Professional Technical Analysis**
-- **30+ Technical Indicators** (with TA-Lib)
-- RSI, MACD, Bollinger Bands, Stochastic
-- Moving Averages (SMA, EMA, WMA)
-- Volume analysis and momentum indicators
-- Support/Resistance levels
-
-### **📱 Interactive Web Interface**
-- Professional candlestick charts
+### 🎨 Interactive Visualizations
+- Professional candlestick charts with Plotly
+- Multi-panel technical analysis views
 - Real-time price updates
-- Customizable timeframes and indicators
-- Account dashboard with positions and orders
-- Mobile-responsive design
+- Customizable chart layouts
 
-## 🛠️ **Installation & Setup**
+### 🌐 Cross-Platform Support
+- **Windows**: Native MetaTrader 5 support
+- **Linux**: Wine-based MT5 bridge
+- **Google Colab**: Complete setup automation
 
-### **Prerequisites**
-1. **MetaTrader 5 Terminal** - Download from your broker or [MetaQuotes](https://www.metatrader5.com/)
-2. **MT5 Trading Account** - Demo or live account with your broker
-3. **Google Colab** or Python 3.7+ environment
+## 📋 Prerequisites
 
-### **Quick Start**
+- Python 3.8 or higher
+- MetaTrader 5 account (demo or live)
+- Internet connection for data feeds
 
-#### **Step 1: Download Files**
+## 🛠️ Installation
+
+### Option 1: Local Installation
+
+1. **Clone the repository**
 ```bash
-# Download from GitHub
-git clone https://github.com/Echo1234b/redo.git
-cd redo
+git clone https://github.com/yourusername/btc-analyzer.git
+cd btc-analyzer
 ```
 
-#### **Step 2: Setup in Google Colab**
+2. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+3. **Run the application**
+```bash
+streamlit run src/btc_analyzer_app.py
+```
+
+### Option 2: Google Colab Setup
+
+1. **Run the setup script in Colab**
 ```python
-# Upload these files to Google Colab:
-# - btc_live_analyzer_mt5.py
-# - colab_setup_mt5.py
-# - metatrader_integration.py
-# - requirements.txt
-
-# Run setup
-exec(open('colab_setup_mt5.py').read())
+!wget https://raw.githubusercontent.com/yourusername/btc-analyzer/main/scripts/colab_setup.py
+!python colab_setup.py
 ```
 
-#### **Step 3: Launch the App**
+2. **Clone and start the application**
 ```python
-# Start the application
-exec(open('run_tunnel_mt5.py').read())
+!git clone https://github.com/yourusername/btc-analyzer.git /content/btc-analyzer
+!python /content/start_btc_analyzer.py
 ```
 
-#### **Step 4: Connect to MetaTrader 5**
-1. Open the app via the ngrok URL
-2. Enter your MT5 credentials in the sidebar
-3. Select trading symbols and timeframes
-4. Start analyzing!
+### Option 3: Linux with Wine (Manual Setup)
 
-## 📊 **Usage Guide**
-
-### **Connecting to MetaTrader 5**
-1. **Install and login** to MetaTrader 5 terminal
-2. **Enable algorithmic trading** in MT5 settings
-3. **Enter credentials** in the app sidebar:
-   - Login: Your MT5 account number
-   - Password: Your MT5 password
-   - Server: Your broker's server name
-
-### **Analyzing Markets**
-1. **Search for symbols** (BTC, EUR, USD, etc.)
-2. **Select timeframe** (M1, M5, H1, H4, D1, etc.)
-3. **Load historical data** (100-5000 bars)
-4. **View real-time analysis** and AI predictions
-
-### **Monitoring Your Account**
-- **Account balance** and equity
-- **Open positions** with P&L
-- **Pending orders** and their status
-- **Margin information** and levels
-
-## 🎯 **Supported Instruments**
-
-### **Cryptocurrencies**
-- BTCUSD, ETHUSD, LTCUSD
-- ADAUSD, DOTUSD, LINKUSD
-- Any crypto pairs your broker offers
-
-### **Forex Pairs**
-- EURUSD, GBPUSD, USDJPY
-- AUDUSD, USDCAD, NZDUSD
-- All major and minor currency pairs
-
-### **Other Markets**
-- **Stocks** and **Indices**
-- **Commodities** (Gold, Oil, Silver)
-- **CFDs** and **Futures**
-- Any instrument available in your MT5 terminal
-
-## 🔧 **Technical Requirements**
-
-### **Dependencies**
-- **MetaTrader5** >= 5.0.45
-- **pandas** >= 2.0.3
-- **numpy** >= 1.24.3
-- **streamlit** >= 1.31.0
-- **plotly** >= 5.17.0
-- **scikit-learn** >= 1.3.0
-- **TA-Lib** >= 0.4.25 (optional)
-
-### **System Requirements**
-- **Python 3.7+**
-- **MetaTrader 5 terminal** (Windows/Mac/Linux)
-- **Internet connection** for real-time data
-- **2GB RAM** minimum (4GB recommended)
-
-## 🧪 **Testing**
-
-Run the test suite to verify your setup:
-```python
-exec(open('test_app.py').read())
+1. **Install Wine and dependencies**
+```bash
+sudo apt update
+sudo apt install wine winetricks xvfb
 ```
 
-Expected output:
-```
-🧪 MetaTrader 5 Bitcoin Live Analyzer - Test Suite
-✅ MT5 app file syntax is valid
-✅ MetaTrader5 - Available
-✅ MT5 integration module syntax is valid
-✅ Streamlit structure is correct
-🎉 All tests passed! The MT5 app should work correctly.
+2. **Setup Python environment**
+```bash
+pip install -r requirements.txt
+pip install pymt5linux  # or mt5linux
 ```
 
-## 📚 **Documentation**
+3. **Configure Wine for MT5**
+```bash
+winecfg  # Set to Windows 10
+```
 
-- **[MT5 Data Import Guide](MT5_DATA_IMPORT_GUIDE.md)** - How to import data from MetaTrader 5
-- **[MetaTrader Integration Guide](METATRADER_INTEGRATION_GUIDE.md)** - Complete integration documentation
-- **[Repository Summary](REPOSITORY_REBUILD_SUMMARY.md)** - Latest updates and features
+## 🔧 Configuration
 
-## 🔒 **Security & Privacy**
+### MetaTrader 5 Setup
 
-- **Local data processing** - No data leaves your computer
-- **Broker-level security** - Uses your broker's encryption
-- **Read-only access** - No trading functions, analysis only
-- **Account protection** - Credentials stored locally only
+1. **Download and install MT5**
+   - Windows: Download from MetaQuotes website
+   - Linux: Use Wine to install Windows version
 
-## ⚠️ **Disclaimer**
+2. **Enable algorithmic trading**
+   - In MT5: Tools → Options → Expert Advisors
+   - Check "Allow automated trading"
+   - Check "Allow DLL imports"
 
-This software is for educational and analysis purposes only. It does not provide financial advice or trading recommendations. Always conduct your own research and consult with financial professionals before making trading decisions.
+3. **Get broker credentials**
+   - Login number
+   - Password
+   - Server name
 
-- **Not financial advice** - For educational purposes only
-- **Use at your own risk** - No guarantee of profits
-- **Demo accounts recommended** - Test before live trading
-- **Verify all data** - Cross-check with your broker
+### Application Configuration
 
-## 🤝 **Contributing**
+The application uses the sidebar for all configuration:
 
-Contributions are welcome! Please feel free to submit pull requests, report bugs, or suggest new features.
+1. **MT5 Connection**
+   - Enter your login credentials
+   - Select broker server
+   - Click "Connect to MT5"
 
-## 📞 **Support**
+2. **Symbol Selection**
+   - Choose from available symbols
+   - Bitcoin symbols are prioritized
+   - View symbol information
 
-For support and questions:
-- **GitHub Issues** - Report bugs and request features
-- **Documentation** - Check the guides in this repository
-- **MetaTrader 5 Support** - Contact your broker for MT5 issues
+3. **Analysis Parameters**
+   - Select timeframe
+   - Adjust data points
+   - Configure indicators
 
-## 🏆 **Why This Version?**
+## 📱 Usage
 
-### **Professional Grade**
-- **Real broker data** - Not free APIs
-- **Institutional quality** - Same data pros use
-- **Complete coverage** - All tradeable instruments
-- **Account integration** - Monitor your actual trading
+### Getting Started
 
-### **Advanced Features**
-- **AI predictions** with professional data
-- **30+ technical indicators**
-- **Multi-timeframe analysis**
-- **Real-time updates**
+1. **Launch the application**
+```bash
+streamlit run src/btc_analyzer_app.py
+```
 
-### **Easy to Use**
-- **One-click setup** in Google Colab
-- **Professional interface**
-- **Comprehensive documentation**
-- **Testing and diagnostics**
+2. **Connect to MetaTrader 5**
+   - Use the sidebar connection form
+   - Enter your MT5 credentials
+   - Verify connection status
+
+3. **Select trading symbol**
+   - Choose BTCUSD or other crypto pairs
+   - Review symbol information
+   - Select preferred timeframe
+
+4. **Load and analyze data**
+   - Click "Load Data" to fetch historical data
+   - View technical indicators
+   - Check AI predictions
+
+### Key Features Explained
+
+#### 🎯 Price Prediction
+- Uses Random Forest machine learning
+- Predicts next period price direction
+- Provides confidence levels
+- Updates in real-time
+
+#### 📊 Technical Indicators
+- **RSI**: Relative Strength Index (14-period)
+- **MACD**: Moving Average Convergence Divergence
+- **Bollinger Bands**: 20-period with 2 standard deviations
+- **Volume Analysis**: 20-period volume moving average
+
+#### 📈 Chart Analysis
+- **Candlestick Charts**: OHLC price data
+- **Volume Bars**: Trading volume analysis
+- **Indicator Overlays**: Technical analysis overlays
+- **Multi-timeframe**: Switch between different periods
+
+## 🏗️ Project Structure
+
+```
+btc-analyzer/
+├── src/
+│   ├── btc_analyzer_app.py      # Main Streamlit application
+│   └── mt5_integration.py       # MetaTrader 5 integration module
+├── scripts/
+│   └── colab_setup.py          # Google Colab setup automation
+├── docs/
+│   ├── installation.md         # Detailed installation guide
+│   └── troubleshooting.md      # Common issues and solutions
+├── config/
+│   └── settings.py             # Application configuration
+├── requirements.txt            # Python dependencies
+└── README.md                  # This file
+```
+
+## 🔍 Technical Details
+
+### Dependencies
+
+- **Streamlit**: Web application framework
+- **MetaTrader5**: MT5 API integration
+- **Pandas/NumPy**: Data processing
+- **Plotly**: Interactive charts
+- **Scikit-learn**: Machine learning
+- **TA-Lib**: Technical analysis (optional)
+
+### Data Flow
+
+1. **Connection**: App connects to MT5 terminal
+2. **Data Retrieval**: Historical and real-time data fetched
+3. **Processing**: Technical indicators calculated
+4. **Analysis**: ML model training and prediction
+5. **Visualization**: Interactive charts and metrics
+6. **Updates**: Real-time data refresh
+
+### Supported Symbols
+
+- **Cryptocurrencies**: BTCUSD, ETHUSD, LTCUSD, etc.
+- **Forex Pairs**: EURUSD, GBPUSD, USDJPY, etc.
+- **Indices**: US30, SPX500, NAS100, etc.
+- **Commodities**: XAUUSD, XAGUSD, USOIL, etc.
+
+## 🚨 Troubleshooting
+
+### Common Issues
+
+1. **MT5 Connection Failed**
+   - Verify credentials and server name
+   - Check internet connection
+   - Ensure MT5 allows API connections
+
+2. **No Data Available**
+   - Check symbol spelling
+   - Verify market hours
+   - Try different timeframe
+
+3. **Linux Installation Issues**
+   - Install Wine properly
+   - Use Python 3.8+ with Wine
+   - Try alternative MT5 packages
+
+4. **TA-Lib Import Error**
+   - Install TA-Lib binary
+   - Use basic indicators (automatic fallback)
+   - Check system dependencies
+
+### Getting Help
+
+- Check the `docs/troubleshooting.md` file
+- Review MT5 connection logs
+- Verify Python and package versions
+- Test with demo account first
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## ⚠️ Disclaimer
+
+This software is for educational and informational purposes only. It should not be considered financial advice. Trading cryptocurrencies and forex involves substantial risk and may not be suitable for all investors. Always consult with qualified financial professionals before making investment decisions.
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/yourusername/btc-analyzer/issues)
+- **Documentation**: Check the `docs/` folder
+- **Updates**: Watch the repository for updates
 
 ---
 
-## 🚀 **Get Started Now!**
-
-1. **Download** the files from this repository
-2. **Install MetaTrader 5** and create an account
-3. **Upload to Google Colab** and run the setup
-4. **Start analyzing** with professional data!
-
-**Transform your trading analysis with institutional-grade data and AI-powered insights!** 📈✨
-
----
-
-*Built with ❤️ for professional traders and analysts*
+Made with ❤️ for the Bitcoin and crypto trading community

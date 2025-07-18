@@ -27,7 +27,7 @@ import joblib
 from typing import Dict, List, Tuple
 
 # MetaTrader integration
-from metatrader_integration import MetaTraderDataProvider, MetaTraderStreamlitUI
+from mt5_integration import MetaTraderDataProvider, MetaTraderStreamlitUI
 
 # Try to import TA-Lib, fall back to basic indicators if not available
 try:
