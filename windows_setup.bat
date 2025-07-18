@@ -16,22 +16,22 @@ echo ✅ Python is installed
 
 echo.
 echo [2/5] Upgrading pip...
-python -m pip install --upgrade pip
+py -m pip install --upgrade pip
 
 echo.
 echo [3/5] Installing core dependencies...
-python -m pip install streamlit pandas numpy plotly scikit-learn
+py -m pip install streamlit pandas numpy plotly scikit-learn
 
 echo.
 echo [4/5] Installing Windows-specific packages...
-python -m pip install pywin32 wmi
+py -m pip install pywin32 wmi
 
 echo.
 echo [5/5] Installing MetaTrader5 and TA-Lib...
 
 REM Try to install MetaTrader5
 echo Installing MetaTrader5...
-python -m pip install MetaTrader5
+py -m pip install MetaTrader5
 if errorlevel 1 (
     echo ⚠️  MetaTrader5 installation failed - app will run in demo mode
 ) else (
@@ -40,7 +40,7 @@ if errorlevel 1 (
 
 REM Try to install TA-Lib
 echo Installing TA-Lib...
-python -m pip install --find-links=https://github.com/mrjbq7/ta-lib/releases/latest --prefer-binary TA-Lib
+py -m pip install --find-links=https://github.com/mrjbq7/ta-lib/releases/latest --prefer-binary TA-Lib
 if errorlevel 1 (
     echo ⚠️  TA-Lib installation failed - using basic indicators
     echo 💡 You may need to install Visual C++ Build Tools
