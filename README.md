@@ -47,7 +47,16 @@ A powerful, real-time Bitcoin and cryptocurrency analyzer with MetaTrader 5 inte
 
 ## 🛠️ Installation
 
-### Option 1: Local Installation
+### Option 1: Windows Quick Setup (Recommended)
+
+1. **Download the app** and extract to a folder
+2. **Run automated setup**: Double-click `windows_setup.bat`
+3. **Start the app**: Run `python run_app.py`
+4. **Open browser**: Go to http://localhost:8501
+
+📖 **Detailed Windows Guide**: [WINDOWS_SETUP_GUIDE.md](WINDOWS_SETUP_GUIDE.md)
+
+### Option 2: Manual Installation (All Platforms)
 
 1. **Clone the repository**
 ```bash
@@ -62,6 +71,8 @@ pip install -r requirements.txt
 
 3. **Run the application**
 ```bash
+python run_app.py
+# OR
 streamlit run src/btc_analyzer_app.py
 ```
 

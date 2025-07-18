@@ -16,6 +16,8 @@ from plotly.subplots import make_subplots
 import time
 from datetime import datetime, timedelta
 import warnings
+import platform
+import sys
 warnings.filterwarnings('ignore')
 
 # Machine Learning imports
@@ -26,15 +28,22 @@ from sklearn.metrics import accuracy_score, classification_report
 import joblib
 from typing import Dict, List, Tuple
 
-# MetaTrader integration
-from mt5_integration import MetaTraderDataProvider, MetaTraderStreamlitUI
+# MetaTrader integration with error handling
+try:
+    from mt5_integration import MetaTraderDataProvider, MetaTraderStreamlitUI
+    MT5_INTEGRATION_AVAILABLE = True
+except ImportError as e:
+    MT5_INTEGRATION_AVAILABLE = False
+    st.error(f"⚠️ MT5 Integration module not available: {str(e)}")
 
 # Try to import TA-Lib, fall back to basic indicators if not available
 try:
     import talib
     HAS_TALIB = True
+    st.success("✅ TA-Lib available - Advanced indicators enabled!")
 except ImportError:
     HAS_TALIB = False
+    st.info("⚡ Using built-in indicators (TA-Lib not available)")
 
 # Basic technical indicators for fallback
 def calculate_sma(data, window):
@@ -77,6 +86,56 @@ def calculate_stochastic(high, low, close, k_window=14, d_window=3):
     k_percent = 100 * ((close - lowest_low) / (highest_high - lowest_low))
     d_percent = k_percent.rolling(window=d_window).mean()
     return k_percent, d_percent
+
+# Generate demo data when MT5 is not available
+def generate_demo_bitcoin_data(days=30):
+    """Generate realistic demo Bitcoin data"""
+    np.random.seed(42)  # For reproducible demo data
+    
+    # Generate time series
+    end_time = datetime.now()
+    start_time = end_time - timedelta(days=days)
+    hours = int((end_time - start_time).total_seconds() / 3600)
+    times = [start_time + timedelta(hours=i) for i in range(hours)]
+    
+    # Generate realistic Bitcoin price movements (random walk with trend)
+    start_price = 45000.0
+    prices = []
+    current_price = start_price
+    
+    for i in range(hours):
+        # Bitcoin-like volatility and trend
+        trend = 0.0001  # Slight upward trend
+        volatility = 0.02  # 2% volatility
+        
+        change = np.random.normal(trend, volatility)
+        current_price *= (1 + change)
+        prices.append(current_price)
+    
+    # Create OHLCV data
+    data = []
+    for i, (time, price) in enumerate(zip(times, prices)):
+        # Generate realistic OHLC from price
+        volatility = price * 0.005  # 0.5% intraday volatility
+        high = price + np.random.uniform(0, volatility)
+        low = price - np.random.uniform(0, volatility)
+        open_price = prices[i-1] if i > 0 else price
+        close_price = price
+        volume = np.random.randint(1000, 10000)
+        
+        data.append({
+            'time': time,
+            'Open': open_price,
+            'High': max(open_price, high, close_price),
+            'Low': min(open_price, low, close_price),
+            'Close': close_price,
+            'Volume': volume
+        })
+    
+    df = pd.DataFrame(data)
+    df.set_index('time', inplace=True)
+    
+    return df
 
 # Custom CSS for professional appearance
 st.markdown("""
@@ -126,17 +185,21 @@ class MetaTraderBitcoinAnalyzer:
         self.scaler = None
         
     def initialize_mt5_connection(self):
-        """Initialize MetaTrader 5 connection"""
+        """Initialize MetaTrader 5 connection with error handling"""
+        if not MT5_INTEGRATION_AVAILABLE:
+            return False
+            
         if 'mt5_provider' not in st.session_state:
             st.session_state.mt5_provider = MetaTraderDataProvider()
         
         self.mt5_provider = st.session_state.mt5_provider
-        return self.mt5_provider.mt5_connected
+        return self.mt5_provider.mt5_connected or self.mt5_provider.demo_mode
     
     def get_mt5_data(self, symbol: str, timeframe: str, count: int = 1000):
-        """Get data from MetaTrader 5"""
-        if not self.mt5_provider or not self.mt5_provider.mt5_connected:
-            return pd.DataFrame()
+        """Get data from MetaTrader 5 or generate demo data"""
+        if not self.mt5_provider:
+            # Return demo data if no MT5 provider
+            return generate_demo_bitcoin_data(days=30)
         
         try:
             # Get historical data
@@ -415,11 +478,42 @@ class MetaTraderBitcoinAnalyzer:
 def main():
     st.markdown("<h1 class='main-header'>₿ Bitcoin Live Analyzer & Predictor - MT5 Edition</h1>", unsafe_allow_html=True)
     
-    # Show version info
-    if HAS_TALIB:
-        st.success("🚀 Full Version - All indicators available!")
-    else:
-        st.info("⚡ Lite Version - Basic indicators (still powerful!)")
+    # Show system info and compatibility status
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.info(f"🖥️ Platform: {platform.system()}")
+    with col2:
+        if HAS_TALIB:
+            st.success("✅ TA-Lib Available")
+        else:
+            st.warning("⚡ TA-Lib Not Available")
+    with col3:
+        if MT5_INTEGRATION_AVAILABLE:
+            st.success("✅ MT5 Integration Ready")
+        else:
+            st.warning("⚠️ MT5 Integration Limited")
+    
+    # Windows installation help
+    if platform.system() == "Windows" and (not HAS_TALIB or not MT5_INTEGRATION_AVAILABLE):
+        with st.expander("🔧 Windows Setup Guide", expanded=False):
+            st.markdown("""
+            ### For Windows Users:
+            
+            **To install TA-Lib on Windows:**
+            1. Download TA-Lib from: https://github.com/mrjbq7/ta-lib#windows
+            2. Install using: `pip install TA-Lib`
+            
+            **To install MetaTrader5 on Windows:**
+            1. Install MetaTrader 5 terminal from MetaQuotes
+            2. Install the Python package: `pip install MetaTrader5`
+            3. Make sure MT5 terminal is running
+            4. Enable "Allow DLL imports" in MT5 settings
+            
+            **Quick Windows Setup:**
+            ```bash
+            pip install TA-Lib MetaTrader5
+            ```
+            """)
     
     # Initialize analyzer
     if 'analyzer' not in st.session_state:
@@ -428,20 +522,21 @@ def main():
     analyzer = st.session_state.analyzer
     
     # Initialize MetaTrader connection
-    analyzer.initialize_mt5_connection()
+    mt5_available = analyzer.initialize_mt5_connection()
     
     # Sidebar - MetaTrader Connection
-    connection_details = MetaTraderStreamlitUI.render_connection_form()
-    if connection_details:
-        login, password, server = connection_details
-        if analyzer.mt5_provider.initialize_mt5(login, password, server):
-            st.success("Successfully connected to MetaTrader 5!")
-            st.experimental_rerun()
-        else:
-            st.error("Failed to connect to MetaTrader 5")
+    if MT5_INTEGRATION_AVAILABLE:
+        connection_details = MetaTraderStreamlitUI.render_connection_form()
+        if connection_details:
+            login, password, server = connection_details
+            if analyzer.mt5_provider.initialize_mt5(login, password, server):
+                st.success("Successfully connected to MetaTrader 5!")
+                st.experimental_rerun()
+            else:
+                st.error("Failed to connect to MetaTrader 5")
     
-    # Main content
-    if analyzer.mt5_provider and analyzer.mt5_provider.mt5_connected:
+    # Main content - Handle both MT5 and demo modes
+    if mt5_available and analyzer.mt5_provider:
         # Symbol selection
         selected_symbol = MetaTraderStreamlitUI.render_symbol_selector(analyzer.mt5_provider)
         
@@ -529,22 +624,89 @@ def main():
                     st.dataframe(analyzer.data.tail(100))
         
         # Account info
-        MetaTraderStreamlitUI.render_account_info(analyzer.mt5_provider)
-        
-        # Positions and orders
-        positions = analyzer.mt5_provider.get_positions()
-        if not positions.empty:
-            st.subheader("📈 Open Positions")
-            st.dataframe(positions[['symbol', 'type', 'volume', 'price_open', 'price_current', 'profit']])
-        
-        orders = analyzer.mt5_provider.get_orders()
-        if not orders.empty:
-            st.subheader("📋 Pending Orders")
-            st.dataframe(orders[['symbol', 'type', 'volume', 'price_open', 'time_setup']])
+        if MT5_INTEGRATION_AVAILABLE:
+            MetaTraderStreamlitUI.render_account_info(analyzer.mt5_provider)
     
     else:
-        st.warning("Please connect to MetaTrader 5 to start analyzing data.")
-        st.info("👆 Use the sidebar to enter your MT5 connection details.")
+        # Demo mode fallback
+        st.info("🎮 Demo Mode: Using simulated Bitcoin data")
+        
+        # Demo data controls
+        st.sidebar.header("🎮 Demo Controls")
+        demo_days = st.sidebar.slider("Demo Data Days", min_value=7, max_value=90, value=30)
+        
+        if st.sidebar.button("📊 Load Demo Data") or 'demo_data_loaded' not in st.session_state:
+            with st.spinner("Generating demo Bitcoin data..."):
+                df = generate_demo_bitcoin_data(days=demo_days)
+                
+                if not df.empty:
+                    # Add technical indicators
+                    df = analyzer.add_technical_indicators(df)
+                    analyzer.data = df
+                    
+                    # Train ML model
+                    with st.spinner("Training ML model..."):
+                        model, scaler = analyzer.train_ml_model(df)
+                        analyzer.model = model
+                        analyzer.scaler = scaler
+                    
+                    st.session_state.demo_data_loaded = True
+                    st.success(f"Generated {len(df)} demo data points")
+        
+        # Display demo data if available
+        if not analyzer.data.empty:
+            # Demo current price info
+            latest_data = analyzer.data.iloc[-1]
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                st.metric("Demo Price", f"${latest_data['Close']:.2f}")
+            with col2:
+                st.metric("High", f"${latest_data['High']:.2f}")
+            with col3:
+                st.metric("Low", f"${latest_data['Low']:.2f}")
+            with col4:
+                st.metric("Volume", f"{latest_data['Volume']:,.0f}")
+            
+            # ML Prediction
+            if analyzer.model and analyzer.scaler:
+                prediction = analyzer.predict_price_direction(analyzer.data, analyzer.model, analyzer.scaler)
+                if prediction:
+                    st.markdown(f"""
+                    <div class="prediction-box">
+                        <h3>🤖 AI Prediction (Demo)</h3>
+                        <p><strong>Direction:</strong> {prediction['direction']}</p>
+                        <p><strong>Confidence:</strong> {prediction['confidence']} ({prediction['probability']:.3f})</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+            
+            # Chart
+            chart = analyzer.create_candlestick_chart(analyzer.data)
+            if chart:
+                st.plotly_chart(chart, use_container_width=True)
+            
+            # Technical indicators summary
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.subheader("📊 Technical Indicators")
+                st.metric("RSI", f"{latest_data['RSI']:.2f}")
+                st.metric("MACD", f"{latest_data['MACD']:.5f}")
+                st.metric("SMA 20", f"${latest_data['SMA_20']:.2f}")
+            
+            with col2:
+                st.subheader("📈 Moving Averages") 
+                st.metric("SMA 50", f"${latest_data['SMA_50']:.2f}")
+                st.metric("EMA 12", f"${latest_data['EMA_12']:.2f}")
+                st.metric("EMA 26", f"${latest_data['EMA_26']:.2f}")
+            
+            with col3:
+                st.subheader("🎯 Bollinger Bands")
+                st.metric("Upper Band", f"${latest_data['BB_upper']:.2f}")
+                st.metric("Middle Band", f"${latest_data['BB_middle']:.2f}")
+                st.metric("Lower Band", f"${latest_data['BB_lower']:.2f}")
+            
+            # Raw data
+            with st.expander("📋 Raw Data (Demo)"):
+                st.dataframe(analyzer.data.tail(100))
 
 if __name__ == "__main__":
     main()

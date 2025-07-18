@@ -1,5 +1,5 @@
 # BTC Analyzer with MetaTrader 5 Integration - Requirements
-# Compatible with Python 3.8+
+# Compatible with Python 3.8+ and optimized for Windows
 
 # Web Application Framework
 streamlit>=1.28.0
@@ -15,15 +15,20 @@ plotly>=5.17.0
 scikit-learn>=1.3.0
 
 # MetaTrader5 Integration
-# Primary package for Windows
+# Windows Primary Package
 MetaTrader5>=5.0.47; sys_platform == "win32"
 
-# Linux Bridge Packages (try both)
+# Linux Alternative Packages (try both)
 pymt5linux>=1.0; sys_platform == "linux"
 mt5linux>=0.1.9; sys_platform == "linux"
 
-# Technical Analysis (optional but recommended)
-TA-Lib>=0.4.24
+# Technical Analysis (Windows Installation)
+# For Windows: Install Visual C++ Build Tools first, then:
+# pip install --find-links=https://github.com/mrjbq7/ta-lib/releases/latest --prefer-binary TA-Lib
+TA-Lib>=0.4.24; sys_platform == "win32"
+
+# Alternative TA-Lib for other platforms
+TA-Lib>=0.4.24; sys_platform != "win32"
 
 # Date and Time Handling
 python-dateutil>=2.8.0
@@ -35,6 +40,20 @@ requests>=2.31.0
 # Type Hints
 typing-extensions>=4.7.0
 
+# Windows-specific enhancements
+pywin32>=306; sys_platform == "win32"
+wmi>=1.5.1; sys_platform == "win32"
+
 # Development and Testing (optional)
 pytest>=7.0.0
 black>=23.0.0
+
+# Additional scientific libraries for enhanced analysis
+scipy>=1.10.0
+statsmodels>=0.14.0
+
+# Windows Installation Notes:
+# 1. Install Visual C++ Build Tools from Microsoft
+# 2. Install MT5 terminal from MetaQuotes
+# 3. Run: pip install -r requirements.txt
+# 4. For TA-Lib issues, try: pip install --find-links=https://github.com/mrjbq7/ta-lib/releases/latest --prefer-binary TA-Lib
